@@ -20,3 +20,5 @@
 ###### - Always add the `to string` method for your model
 
 
+### <ins>EERD:</ins>
+![The App EERD drawio](https://user-images.githubusercontent.com/83036619/197565953-5f26f2f4-ad59-4e9a-bd25-7beafad34e85.png)
