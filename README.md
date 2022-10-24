@@ -6,7 +6,7 @@
 ###### - Add any files that are specific to your dev process in the `.gitignore` file (eg. IDE config files)
 ###### - Any secret keys or variables to be added in the `Config.env` File
 
-###<ins> Guidelines for getting started with a new feature:</ins>
+### <ins> Guidelines for getting started with a new feature:</ins>
 ###### - The `EMCS` folder is the folder with the main starting point routes, so you are only allowed to make changes in the `settings.py` file and add one root route per django app in `urls.py`
 ###### - Run `python manage.py startapp appName` to start a new app
 ###### - Add the app to the `INSTALLED_APPS` list in `settings.py` in the `EMCS` folder
