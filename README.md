@@ -2,6 +2,7 @@
 
 ### <ins>General guidelines for getting started:</ins>
 ###### - Create your own branch (eg. Admin_Branch) from the main branch and always work on that one
+###### - run `pip3 install -r requirements.txt` to install all dependencies
 ###### - Don't change or add code or files in files or folders you did not create or worked on (Conflicts in merging)
 ###### - Add any files that are specific to your dev process in the `.gitignore` file (eg. IDE config files)
 ###### - Any secret keys or variables to be added in the `Config.env` File
