@@ -1,8 +1,6 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .models import ContactPerson, Location, School
-from .serializers import SchoolSerializer, LocationSerializer, ContactPersonSerializer, SchoolSerializer_NO_ID
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .models import School
+from .serializers import SchoolSerializer, SchoolSerializer_NO_ID
 
 
 class Schools(ListCreateAPIView):

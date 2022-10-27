@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # Local (our apps)
     'school.apps.SchoolConfig',
+    'course.apps.CourseConfig',
 ]
 
 MIDDLEWARE = [
