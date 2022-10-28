@@ -9,4 +9,4 @@ class Session(models.Model):
     end_time = models.DateTimeField()
 
     def __str__(self):
-        f'{self.course.school} - {self.course.name} {self.start_time.strftime("%d/%m/%Y")}'
+        return f'{self.course.school} - {self.course.name} {self.start_time.strftime("%d/%m/%Y")}'
