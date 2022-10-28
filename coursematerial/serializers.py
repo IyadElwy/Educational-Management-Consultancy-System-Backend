@@ -4,7 +4,8 @@ from .models import SchoolMaterial, VolunteerMaterial
 
 class SchoolMaterialSerializer_NO_ID(serializers.ModelSerializer):
     class Meta:
-        fields = ('session',
+        fields = ('id',
+                  'session',
                   'name',
                   'description')
         model = SchoolMaterial
@@ -19,7 +20,8 @@ class SchoolMaterialSerializer_NO_ID(serializers.ModelSerializer):
 
 class VolunteerMaterialSerializer_NO_ID(serializers.ModelSerializer):
     class Meta:
-        fields = ('session',
+        fields = ('id',
+                  'session',
                   'name',
                   'description',
                   'is_public')
@@ -40,7 +42,8 @@ class SchoolMaterialSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=False)
 
     class Meta:
-        fields = ('session',
+        fields = ('id',
+                  'session',
                   'name',
                   'description')
         model = SchoolMaterial
@@ -57,7 +60,8 @@ class VolunteerMaterialSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=False)
 
     class Meta:
-        fields = ('session',
+        fields = ('id',
+                  'session',
                   'name',
                   'description')
         model = VolunteerMaterial
