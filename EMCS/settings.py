@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'session.apps.SessionConfig',
     'application.apps.ApplicationConfig',
     'wallet.apps.WalletConfig',
+    'coursematerial.apps.CoursematerialConfig',
 ]
 
 MIDDLEWARE = [
