@@ -1,5 +1,11 @@
 # Educational Management Consultancy System Backend
 
+### Phases:
+- Phase 1: Base Models & Behavior
+- Phase 2: Optimize Endpoints for Efficiency
+- phase 3: Connect Models together
+- Phase 4: Add extra features and connect to 3rd party services
+
 ### <ins>General guidelines for getting started:</ins>
 ###### - Create your own branch (eg. Admin_Branch) from the main branch and always work on that one
 ###### - run `pip3 install -r requirements.txt` to install all dependencies
