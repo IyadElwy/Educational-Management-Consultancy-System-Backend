@@ -26,3 +26,5 @@ urllib3==1.26.9
 whitenoise==6.0.0
 XlsxWriter==3.0.3
 yarg==0.1.9
+
+django-filter~=22.1

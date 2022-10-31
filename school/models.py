@@ -10,7 +10,7 @@ class Location(models.Model):
     lon = models.FloatField()
 
     def __str__(self):
-        return self.description
+        return f'{self.lat}-{self.lon}'
 
 
 class ContactPerson(models.Model):

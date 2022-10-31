@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'rest_framework',
+    'django_filters',
     # Local (our apps)
     'school.apps.SchoolConfig',
     'course.apps.CourseConfig',
@@ -130,5 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
