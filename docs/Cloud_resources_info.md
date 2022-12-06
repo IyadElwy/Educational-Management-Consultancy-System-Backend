@@ -5,9 +5,13 @@
 ## Needed Resources:
 
 ### - GCP Postgres Database Instance
+
 #### Pricing: https://cloud.google.com/sql/docs/postgres/pricing
 
 ### - GCP File Storgae
+
 #### Pricing: https://cloud.google.com/filestore/pricing
 
 ### - GCP for Hosting is still unclear. We need to evaluate the finished product to have a clear view of what we'll need but we'll definitely rely on GCP.
+
+#### To be safe we'll set a monetary limit to not be exceeded. This limit will be $250 dollars.
