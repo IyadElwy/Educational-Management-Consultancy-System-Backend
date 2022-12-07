@@ -11,7 +11,7 @@ class User(AbstractUser):
     is_Admin = models.BooleanField(default=False)
     is_Volunteer = models.BooleanField(default=False)
     is_School_Admin = models.BooleanField(default=False)
-    username = models.EmailField(unique=True, null=True)
+    username = models.EmailField(unique=True , null=False)
 
     USERNAME_FIELD = 'username'      #To avoid any clashing and renaming of a username field the username is also the email field
 
@@ -33,7 +33,7 @@ class Volunteer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     profle_pic = models.ImageField(upload_to='profile_pic', blank=True)
-    cv = models.FileField(upload_to='cv', blank=True)
+    cv = models.FileField(upload_to='cv', blank=True, null=True)
     #In Connecting Migration Add To Wallet
 class School_Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

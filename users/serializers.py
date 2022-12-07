@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import User,Volunteer
 
 
-class VolunteerSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'password']
@@ -17,7 +17,19 @@ class VolunteerSerializer(serializers.ModelSerializer):
         if password is not None:
             instance.set_password(password)
 
-        instance.is_Volunteer = True
+
         instance.save()
-        Volunteer.objects.create(user=instance)
         return instance
+
+class VolunteerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Volunteer
+        fields = ['user', 'profle_pic', 'cv']
+
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+
