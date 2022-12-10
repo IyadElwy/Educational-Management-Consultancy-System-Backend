@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 
 
 def home(req):
@@ -10,11 +11,12 @@ def login(req):
 
 
 def register_school(req):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='register_school.html',
+                  context={'key': settings.GCP_API})
 
 
 def register_volunteer(req):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='register_volunteer.html')
 
 
 def download_app(req):
