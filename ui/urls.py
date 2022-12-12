@@ -24,16 +24,11 @@ urlpatterns = [
     path('schooladmin/', views.school_admin_home),
     path('schooladmin/upcomingsessions/', views.school_admin_upcoming_sessions),
     path('schooladmin/upcomingsessions/<int:sessionid>/', views.school_admin_views_single_upcoming_session),
-    path('schooladmin/upcomingsessions/<int:sessionid>/applications/',
-         views.school_admin_views_single_upcoming_session_applications),
-    path('schooladmin/upcomingsessions/<int:sessionid>/applications/<int:applicationid>/',
-         views.school_admin_views_single_application_from_upcoming_session),
     path('schooladmin/pastsessions/', views.school_admin_past_sessions),
     path('schooladmin/pastsessions/<int:sessionid>/', views.school_admin_views_single_past_session),
     path('schooladmin/courses', views.school_admin_courses),
     path('schooladmin/courses/<int:courseid>/', views.school_admin_views_single_course),
     path('schooladmin/addsession', views.school_admin_add_session),
-    path('schooladmin/addcourse', views.school_admin_add_course),
 ]
 
 #####################################################################################################

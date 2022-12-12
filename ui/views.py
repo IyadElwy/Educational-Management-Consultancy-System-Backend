@@ -26,7 +26,7 @@ def download_app(req):
 ##############################################################################
 
 def admin_home(req):
-    return render(request=req, template_name='admin_dashboard.html')
+    return render(request=req, template_name='admin_home.html')
 
 
 def admin_schools(req):
@@ -34,7 +34,7 @@ def admin_schools(req):
 
 
 def admin_views_single_school(req, schoolid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='admin_view_single_school.html')
 
 
 def admin_volunteers(req):
@@ -42,15 +42,15 @@ def admin_volunteers(req):
 
 
 def admin_views_single_volunteer(req, volunteerid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='admin_views_single_volunteer.html')
 
 
-def admin_upcoming_sessions(req, volunteerid):
+def admin_upcoming_sessions(req):
     return render(request=req, template_name='admin_upcoming_sessions.html')
 
 
 def admin_views_single_upcoming_session(req, sessionid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='admin_views_single_upcoming_session.html')
 
 
 def admin_past_sessions(req):
@@ -58,13 +58,13 @@ def admin_past_sessions(req):
 
 
 def admin_views_single_past_session(req, sessionid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='admin_views_single_past_session.html')
 
 
 ##############################################################################
 
 def school_admin_home(req):
-    return render(request=req, template_name='school_admin_dashboard.html')
+    return render(request=req, template_name='school_admin_home.html')
 
 
 def school_admin_upcoming_sessions(req):
@@ -72,15 +72,7 @@ def school_admin_upcoming_sessions(req):
 
 
 def school_admin_views_single_upcoming_session(req, sessionid):
-    return render(request=req, template_name='404.html')
-
-
-def school_admin_views_single_upcoming_session_applications(req, sessionid):
-    return render(request=req, template_name='404.html')
-
-
-def school_admin_views_single_application_from_upcoming_session(req, sessionid, applicationid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='school_admin_views_single_upcoming_session.html')
 
 
 def school_admin_past_sessions(req):
@@ -88,7 +80,7 @@ def school_admin_past_sessions(req):
 
 
 def school_admin_views_single_past_session(req, sessionid):
-    return render(request=req, template_name='404.html')
+    return render(request=req, template_name='school_admin_views_single_past_session.html')
 
 
 def school_admin_add_session(req):
@@ -100,11 +92,7 @@ def school_admin_courses(req):
 
 
 def school_admin_views_single_course(req, courseid):
-    return render(request=req, template_name='404.html')
-
-
-def school_admin_add_course(req):
-    return render(request=req, template_name='school_admin_add_courses.html')
+    return render(request=req, template_name='school_admin_views_single_course.html')
 
 
 ##############################################################################

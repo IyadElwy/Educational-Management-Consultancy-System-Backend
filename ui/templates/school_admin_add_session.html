@@ -1,6 +1,41 @@
 {% extends 'school_admin_dashboard.html' %}
 
+
 {% block dashboard-content %}
 
-    <h2>Add Session</h2>
+    <h2>Creating Session</h2>
+
+    <form>
+
+        <br>
+
+        <div class="row g-3">
+            <div class="col">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Choose Course</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <br>
+                <label for="start" class="form-label">Start-Date</label>
+                <input type="date" class="form-control" id="start">
+                <br>
+                <label for="end" class="form-label">End-Date</label>
+                <input type="date" class="form-control" id="end">
+                <br>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Description</span>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
 {% endblock dashboard-content %}
