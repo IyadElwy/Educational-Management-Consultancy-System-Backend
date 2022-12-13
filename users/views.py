@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import VolunteerSerializer, UserSerializer, StudentSerializer, AdminSerializer, School_AdminSerializer
-from .models import User
+from .models import User, Volunteer, Student, Admin, School_Admin
 import jwt, datetime
 import json
 
@@ -125,4 +125,33 @@ class LoginView(APIView):
             'jwt': token
         }
         return response
+class UserView(APIView):
 
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms='HS256')
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = User.objects.filter(id=payload['id']).first()
+        serializer = UserSerializer(user)
+        if user.is_Volunteer:
+            volunteer = Volunteer.objects.filter(user=user).first()
+            serializer = VolunteerSerializer(volunteer)
+        if user.is_Student:
+            student = Student.objects.filter(user=user).first()
+            serializer = StudentSerializer(student)
+        if user.is_Admin:
+            admin = Admin.objects.filter(user=user).first()
+            serializer = AdminSerializer(admin)
+        if user.is_School_Admin:
+            school_admin = School_Admin.objects.filter(user=user).first()
+            serializer = School_AdminSerializer(school_admin)
+
+
+        return Response(serializer.data)
