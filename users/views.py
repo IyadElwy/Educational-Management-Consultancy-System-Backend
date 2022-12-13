@@ -140,18 +140,21 @@ class UserView(APIView):
 
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
+        extra = {}
+        serializer1 = None
         if user.is_Volunteer:
             volunteer = Volunteer.objects.filter(user=user).first()
-            serializer = VolunteerSerializer(volunteer)
+            serializer1 = VolunteerSerializer(volunteer)
         if user.is_Student:
             student = Student.objects.filter(user=user).first()
-            serializer = StudentSerializer(student)
+            serializer1 = StudentSerializer(student)
         if user.is_Admin:
             admin = Admin.objects.filter(user=user).first()
-            serializer = AdminSerializer(admin)
+            serializer1 = AdminSerializer(admin)
         if user.is_School_Admin:
             school_admin = School_Admin.objects.filter(user=user).first()
-            serializer = School_AdminSerializer(school_admin)
+            serializer1 = School_AdminSerializer(school_admin)
 
-
-        return Response(serializer.data)
+        extra['user'] = serializer.data
+        extra['extra'] = serializer1.data
+        return Response(extra)
