@@ -158,3 +158,13 @@ class UserView(APIView):
         extra['user'] = serializer.data
         extra['extra'] = serializer1.data
         return Response(extra)
+
+#Can be ignoreed after Use of frontend but just in case
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'success'
+        }
+        return response
