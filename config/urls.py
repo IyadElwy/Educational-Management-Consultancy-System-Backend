@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/v1/material/', include('coursematerial.urls')),
     path('api/v1/rating/', include('rating.urls')),
     path('', include('ui.urls')),
+    path('api/v1/users/', include('users.urls')),
 ]
