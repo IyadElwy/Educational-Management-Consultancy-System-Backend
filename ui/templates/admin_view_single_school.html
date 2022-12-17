@@ -3,7 +3,7 @@
 
 {% block dashboard-content %}
 
-    <h2>School Name</h2>
+    <h2>{{ school.name }}</h2>
     <br>
     <div class="container text-center">
         <div class="row">
@@ -11,21 +11,21 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Location</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ school.location }}</p>
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Contact Info</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ school.contact_person }}</p>
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Sessions</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">223 sessions</p>
                     </div>
                 </div>
 
@@ -34,14 +34,14 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Guidelines</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ school.school_description }}</p>
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Status</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">Not implemented</p>
                     </div>
                 </div>
                 <br>

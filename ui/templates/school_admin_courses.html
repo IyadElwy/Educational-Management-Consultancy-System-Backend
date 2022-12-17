@@ -23,7 +23,9 @@
                             <td>Math 101</td>
                             <td>8</td>
                             <td>
-                                <button href="#" type="button" class="btn btn-outline-warning btn-sm">View</button>
+                                <a href="{% url 'school_admin_views_single_course' 1 %}">
+                                    <button type="button" class="btn btn-outline-warning btn-sm">View</button>
+                                </a>
                             </td>
                             <td>
                                 <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
@@ -36,20 +38,19 @@
 
             </div>
             <div class="col">
-                <form>
-                    <label for="Name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="Name">
-                    <br>
-                    <label for="grade" class="form-label">Grade Level</label>
-                    <input type="text" class="form-control" id="grade">
-                    <br>
-                    <div class="input-group">
-                        <span class="input-group-text">Description</span>
-                        <textarea class="form-control" aria-label="With textarea"></textarea>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary">Add New Course</button>
+                <form action="{% url 'school_admin_add_course' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
 
+                    {% for field in form %}
+
+                        {{ field.errors }}
+                        <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        <br>
+
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">Add New Course</button>
 
                 </form>
                 <br>

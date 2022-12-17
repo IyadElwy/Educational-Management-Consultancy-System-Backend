@@ -1,9 +1,10 @@
 {% extends 'school_admin_dashboard.html' %}
+{% load bootstrap %}
 
 
 {% block dashboard-content %}
 
-    <h2>Session Id</h2>
+    <h2>Session {{ session.pk }}</h2>
     <div class="container text-center">
         <div class="row">
             <div class="col">
@@ -12,7 +13,9 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Details</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">Course: {{ session.course }}</p>
+                        <p class="card-text">Time: {{ session.start_time }} - {{ session.end_time }}</p>
+                        <p class="card-text">{{ session.description }}</p>
                     </div>
                 </div>
                 <br>
@@ -21,22 +24,17 @@
             </div>
             <div class="col">
                 <h4>Please review your volunteer:</h4>
-                <form>
-                    <div class="mb-3">
-                        <label for="customRange2" class="form-label">Professional Behavior</label>
-                        <input type="range" class="form-range" min="0" max="10" id="customRange2">
+                <form method="post">
+                    {% csrf_token %}
 
-                    </div>
-                    <div class="mb-3">
-                        <label for="customRange2" class="form-label">Ease Of Contacting</label>
-                        <input type="range" class="form-range" min="0" max="10" id="customRange2">
+                    <br>
 
-                    </div>
-                    <div class="mb-3 form-check">
-                        <label for="customRange2" class="form-label">Timeliness</label>
-                        <input type="range" class="form-range" min="0" max="10" id="customRange2">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Review</button>
+
+                    {{ form|bootstrap }}
+                    <br>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
                 </form>
                 <br>
 

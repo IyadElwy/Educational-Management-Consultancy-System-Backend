@@ -174,7 +174,9 @@
 
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    <a href="{% url 'login' %}">
+                        <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -196,7 +198,13 @@
                     <h2 class="display-5">Looking for great Volunteers?</h2>
                     <p class="lead">Sign up as a school admin and be your school's representative.</p>
                 </div>
-                <button type="button" class="btn btn-warning">Sign-up now as a school admin</button>
+                <a href="{% url 'register_school' %}">
+                    <button type="button" class="btn btn-warning"
+                    >Sign-up now as a school
+                        admin
+                    </button>
+                </a>
+
 
             </div>
             <div class="bg-light me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
@@ -209,8 +217,9 @@
                      style="width: 80%; height: 150px; border-radius: 21px 21px 0 0;">
                     <br>
                     <br>
-                    <button type="button" class="btn btn-warning">Sign-up as a Volunteer</button>
-
+                    <a href="{% url 'register_volunteer' %}">
+                        <button type="button" class="btn btn-warning">Sign-up as a Volunteer</button>
+                    </a>
 
                 </div>
 

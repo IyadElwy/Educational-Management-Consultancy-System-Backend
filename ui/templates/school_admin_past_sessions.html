@@ -28,15 +28,24 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>121</td>
-                <td>3</td>
-                <td>Math 101</td>
-                <td>24-09-2022</td>
-                <td>
-                    <button href="#" type="button" class="btn btn-success btn-sm">Evaluate</button>
-                </td>
-            </tr>
+
+            {% for session in sessions %}
+
+                <tr>
+                    <td>{{ session.pk }}</td>
+                    <td>3</td>
+                    <td>{{ session.course.name }}</td>
+                    <td>{{ session.start_time }}</td>
+                    <td>
+                        <a href="{% url 'school_admin_views_single_past_session' session.pk %}">
+                            <button type="button" class="btn btn-success btn-sm">Evaluate</button>
+                        </a>
+                    </td>
+                </tr>
+
+
+            {% endfor %}
+
             </tbody>
         </table>
     </div>

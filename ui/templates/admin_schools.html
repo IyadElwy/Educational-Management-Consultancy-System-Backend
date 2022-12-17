@@ -28,15 +28,26 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1,001</td>
-                <td>GUC</td>
-                <td>Tagamo3 El 5ames</td>
-                <td>445</td>
-                <td>
-                    <button href="#" type="button" class="btn btn-warning btn-sm">Edit</button>
-                </td>
-            </tr>
+
+            {% for school in schools %}
+
+                <tr>
+                    <td>{{ school.pk }}</td>
+                    <td>{{ school.name }}</td>
+                    <td>{{ school.location }}</td>
+                    <td>445</td>
+                    <td>
+                        <a href="{% url 'admin_views_single_school' 1 %}">
+                            <button type="button" class="btn btn-warning
+                    btn-sm">Edit
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+
+
+            {% endfor %}
+
             </tbody>
         </table>
     </div>

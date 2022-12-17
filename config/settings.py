@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GCP_API = os.getenv('GCP_API')
+GCP_JSON = os.getenv('GCP_JSON')
+BUCKET_NAME = os.getenv('BUCKET_NAME')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'corsheaders',
+    'bootstrapform',
     # Added to prevent cors problems
     'rest_framework',
     'django_filters',

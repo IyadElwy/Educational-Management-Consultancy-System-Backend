@@ -29,5 +29,7 @@ yarg==0.1.9
 django-filter~=22.1
 environ~=1.0
 django-cors-headers==3.10.0
-PyJWT==2.3.0
+PyJWT~=2.6.0
 django-filter~=22.1
+google-cloud-storage
+google~=3.0.0

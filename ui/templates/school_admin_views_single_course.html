@@ -4,11 +4,11 @@
 {% block dashboard-content %}
 
     <br>
-    <h3>Course Name - Grade 11</h3>
+    <h3>{{ course.school }} - {{ course.name }} - Grade {{ course.grade_level }}</h3>
     <div class="card text-center">
         <div class="card-body">
             <h5 class="card-title">Course Description</h5>
-            <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+            <p class="card-text">{{ course.description }}</p>
         </div>
     </div>
     <br>
@@ -32,7 +32,10 @@
                         <tr>
                             <td>Math 101 - Cheat Sheet</td>
                             <td>
-                                <button href="#" type="button" class="btn btn-outline-primary btn-sm">Download</button>
+                                <a href="{% url 'school_admin_download_material' 1 1 %}">
+                                    <button type="button" class="btn btn-outline-primary btn-sm">Download
+                                    </button>
+                                </a>
                             </td>
                             <td>
                                 <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
@@ -45,15 +48,18 @@
 
             </div>
             <div class="col">
-                <form>
-                    <label for="Name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="Name">
-                    <br>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload Material</label>
-                        <input class="form-control" type="file" id="formFile">
-                    </div>
-                    <br>
+                <form action="{% url 'school_admin_upload_material' 1 %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+
+                        {{ field.errors }}
+                        <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        <br>
+
+                    {% endfor %}
+
 
                     <button type="submit" class="btn btn-primary">Add New Material</button>
 
@@ -64,5 +70,5 @@
         </div>
         <br>
 
-
+    </div>
 {% endblock dashboard-content %}

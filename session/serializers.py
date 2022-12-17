@@ -8,14 +8,15 @@ class SessionSerializer_NO_ID(serializers.ModelSerializer):
                   'course',
                   'description',
                   'start_time',
-                  'end_time')
+                  'end_time',
+                  )
         model = Session
 
     def create(self, validated_data):
         session = Session.objects.create(course=validated_data['course'],
                                          description=validated_data['description'],
                                          start_time=validated_data['start_time'],
-                                         end_time=validated_data['end_time'])
+                                         end_time=validated_data['end_time'], )
 
         return session
 
@@ -28,13 +29,14 @@ class SessionSerializer(serializers.ModelSerializer):
                   'course',
                   'description',
                   'start_time',
-                  'end_time')
+                  'end_time',
+                  )
         model = Session
 
     def update(self, instance, validated_data):
         Session.objects.filter(id=validated_data['id']).update(course=validated_data['course'],
                                                                description=validated_data['description'],
                                                                start_time=validated_data['start_time'],
-                                                               end_time=validated_data['end_time'])
+                                                               end_time=validated_data['end_time'], )
 
         return Session.objects.get(id=validated_data['id'])
