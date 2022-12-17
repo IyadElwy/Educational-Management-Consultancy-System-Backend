@@ -40,15 +40,50 @@
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Student Score</h5>
-                        <p class="card-text">{{ session.get_avg_ratings.0 }}</p>
+                        <h5 class="card-title">Student Score ({{ session.get_avg_ratings.0.4 }})</h5>
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="card-text">Communication</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.0.0 }}</p>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text">Preparedness</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.0.1 }}</p>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text">Adaptability</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.0.2 }}</p>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text">Management</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.0.3 }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">School-Admin Score</h5>
-                        <p class="card-text">{{ session.get_avg_ratings.1 }}</p>
+                        <h5 class="card-title">School-Admin Score ({{ session.get_avg_ratings.1.2 }})</h5>
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="card-text">Presentation</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.1.0 }}</p>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text">Punctuality</p>
+                                    <p class="card-text">{{ session.get_avg_ratings.1.1 }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <br>

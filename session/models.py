@@ -16,7 +16,7 @@ class Session(models.Model):
     def get_avg_ratings(self):
         ml_scores = MLScore.objects.filter(session_id=self.pk)
         if len(ml_scores) == 0:
-            return self.avg_student(), self.avg_coordinator(), 'No Rating Yet'
+            return self.avg_student(), self.avg_coordinator(), 'N.A.'
         else:
             return self.avg_student(), self.avg_coordinator(), ml_scores[0]
 
@@ -30,14 +30,26 @@ class Session(models.Model):
         question_6_avg = coordinator_scores.aggregate(Avg('question_6'))['question_6__avg']
 
         try:
-            return (question_1_avg +
-                    question_2_avg +
-                    question_3_avg +
-                    question_4_avg +
-                    question_5_avg +
-                    question_6_avg) / 6.0
+            return (
+
+                ((question_1_avg +
+                  question_2_avg +
+                  question_3_avg +
+                  question_4_avg) / 4),
+
+                ((question_5_avg +
+                  question_6_avg) / 2),
+
+                ((question_1_avg +
+                  question_2_avg +
+                  question_3_avg +
+                  question_4_avg +
+                  question_5_avg +
+                  question_6_avg) / 6)
+
+            )
         except Exception as e:
-            return 'No Rating Yet'
+            return 'N.A.', 'N.A.', 'N.A.', 'N.A.', 'N.A.'
 
     def avg_student(self):
         student_scores = StudentRating.objects.filter(session_id=self.pk)
@@ -45,25 +57,47 @@ class Session(models.Model):
         question_2_avg = student_scores.aggregate(Avg('question_2'))['question_2__avg']
         question_3_avg = student_scores.aggregate(Avg('question_3'))['question_3__avg']
         question_4_avg = student_scores.aggregate(Avg('question_4'))['question_4__avg']
+
         question_5_avg = student_scores.aggregate(Avg('question_5'))['question_5__avg']
         question_6_avg = student_scores.aggregate(Avg('question_6'))['question_6__avg']
         question_7_avg = student_scores.aggregate(Avg('question_7'))['question_7__avg']
+
         question_8_avg = student_scores.aggregate(Avg('question_8'))['question_8__avg']
         question_9_avg = student_scores.aggregate(Avg('question_9'))['question_9__avg']
+
         question_10_avg = student_scores.aggregate(Avg('question_10'))['question_10__avg']
         question_11_avg = student_scores.aggregate(Avg('question_11'))['question_11__avg']
 
         try:
-            return (question_1_avg +
-                    question_2_avg +
-                    question_3_avg +
-                    question_4_avg +
-                    question_5_avg +
-                    question_6_avg +
-                    question_7_avg +
-                    question_8_avg +
-                    question_9_avg +
-                    question_10_avg +
-                    question_11_avg) / 6.0
+            return (
+                (
+                    ((question_1_avg +
+                      question_2_avg +
+                      question_3_avg +
+                      question_4_avg) / 4),
+
+                    ((question_5_avg +
+                      question_6_avg +
+                      question_7_avg) / 3),
+
+                    ((question_8_avg +
+                      question_9_avg) / 2),
+
+                    ((question_10_avg +
+                      question_11_avg) / 2),
+
+                    (question_1_avg +
+                     question_2_avg +
+                     question_3_avg +
+                     question_4_avg +
+                     question_5_avg +
+                     question_6_avg +
+                     question_7_avg +
+                     question_8_avg +
+                     question_9_avg +
+                     question_10_avg +
+                     question_11_avg) / 11)
+            )
+
         except Exception as e:
-            return 'No Rating Yet'
+            return 'N.A.', 'N.A.', 'N.A.', 'N.A.', 'N.A.'
