@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from school.models import School
 from rating.models import Rating
 from wallet.models import Wallet
+import uuid
 #from session.models import Session
 # Create your models here.
 
@@ -35,8 +36,6 @@ class Admin(models.Model):
 
 class Volunteer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    profle_pic = models.ImageField(upload_to='profile_pic', blank=True)
-    cv = models.FileField(upload_to='cv', blank=True, null=True)
     #Connectors
     rating = models.OneToOneField(Rating, on_delete=models.CASCADE, blank=True, null=True)
     wallet = models.OneToOneField(Wallet, on_delete=models.CASCADE, blank=True, null=True)

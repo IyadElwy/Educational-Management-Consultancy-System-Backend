@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 class VolunteerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Volunteer
-        fields = ['user', 'profle_pic', 'cv']
+        fields = ['user']
 
 
     def create(self, validated_data):
