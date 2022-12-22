@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from school.models import School
+from rating.models import Rating
+from wallet.models import Wallet
+from session.models import Session
+from application.models import Application
 # Create your models here.
 
 class User(AbstractUser):
@@ -20,8 +24,9 @@ class User(AbstractUser):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
-    #In Connecting Migration Add To School
-    school = models.CharField(max_length=30, blank=True)
+    #Connectors to other models
+    school = models.OneToOneField(School, on_delete=models.CASCADE)
+    takes_session = models.ManyToManyField(Session)  #check if this is correct
 
 
 
@@ -31,13 +36,34 @@ class Admin(models.Model):
 
 class Volunteer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
     profle_pic = models.ImageField(upload_to='profile_pic', blank=True)
     cv = models.FileField(upload_to='cv', blank=True, null=True)
+    #Connectors
+    rating = models.OneToOneField(Rating, on_delete=models.CASCADE, blank=True, null=True)
+    wallet = models.OneToOneField(Wallet, on_delete=models.CASCADE, blank=True, null=True)
+    #Validation:
+    status = models.CharField(max_length=50,
+                              choices=[
+                                  ('In Process', 'In Process'),
+                                  ('Accepted', 'Accepted'),
+                                  ('Rejected', 'Rejected'),
+                              ], default='In Process')
+    validatedBy = models.ForeignKey(Admin, blank=True, null=True)
+
     #In Connecting Migration Add To Wallet
 class School_Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    #Connectors
+    school = models.OneToOneField(School)
 
+    #Validation:
+    status = models.CharField(max_length=50,
+                              choices=[
+                                  ('In Process', 'In Process'),
+                                  ('Accepted', 'Accepted'),
+                                  ('Rejected', 'Rejected'),
+                              ], default='In Process')
+    validatedBy = models.ForeignKey(Admin, blank=True, null=True)
+        #In Connecting Migration Add To School
 
-    #In Connecting Migration Add To School
 
