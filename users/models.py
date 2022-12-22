@@ -3,8 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from school.models import School
 from rating.models import Rating
 from wallet.models import Wallet
-from session.models import Session
-from application.models import Application
+#from session.models import Session
 # Create your models here.
 
 class User(AbstractUser):
@@ -26,7 +25,7 @@ class Student(models.Model):
 
     #Connectors to other models
     school = models.OneToOneField(School, on_delete=models.CASCADE)
-    takes_session = models.ManyToManyField(Session)  #check if this is correct
+    takes_session = models.ManyToManyField('session.Session') #check if this is correct
 
 
 
@@ -48,13 +47,13 @@ class Volunteer(models.Model):
                                   ('Accepted', 'Accepted'),
                                   ('Rejected', 'Rejected'),
                               ], default='In Process')
-    validatedBy = models.ForeignKey(Admin, blank=True, null=True)
+    validatedBy = models.ForeignKey(Admin, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     #In Connecting Migration Add To Wallet
 class School_Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     #Connectors
-    school = models.OneToOneField(School)
+    school = models.OneToOneField(School, on_delete=models.DO_NOTHING)
 
     #Validation:
     status = models.CharField(max_length=50,
@@ -63,7 +62,7 @@ class School_Admin(models.Model):
                                   ('Accepted', 'Accepted'),
                                   ('Rejected', 'Rejected'),
                               ], default='In Process')
-    validatedBy = models.ForeignKey(Admin, blank=True, null=True)
+    validatedBy = models.ForeignKey(Admin,on_delete=models.DO_NOTHING, blank=True, null=True)
         #In Connecting Migration Add To School
 
 
