@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from school.models import School
+from rating.models import Rating
+from wallet.models import Wallet
+import uuid
 
 
 # Create your models here.
@@ -7,7 +11,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    password = models.CharField(max_length=30, blank=True)
+    password = models.CharField(max_length=200, blank=True)
     is_Student = models.BooleanField(default=False)
     is_Admin = models.BooleanField(default=False)
     is_Volunteer = models.BooleanField(default=False)
@@ -25,6 +29,7 @@ class Student(models.Model):
 
     # In Connecting Migration Add To School
     school = models.CharField(max_length=30, blank=True)
+    takes_session = models.ManyToManyField('session.Session')  # check if this is correct
 
 
 class Admin(models.Model):
@@ -33,13 +38,30 @@ class Admin(models.Model):
 
 class Volunteer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
-    profle_pic = models.ImageField(upload_to='profile_pic', blank=True)
-    cv = models.FileField(upload_to='cv', blank=True, null=True)
-    # In Connecting Migration Add To Wallet
+    # Connectors
+    rating = models.OneToOneField(Rating, on_delete=models.CASCADE, blank=True, null=True)
+    wallet = models.OneToOneField(Wallet, on_delete=models.CASCADE, blank=True, null=True)
+    # Validation:
+    status = models.CharField(max_length=50,
+                              choices=[
+                                  ('In Progress', 'In Progress'),
+                                  ('Accepted', 'Accepted'),
+                                  ('Rejected', 'Rejected'),
+                              ], default='In Progress')
+    validatedBy = models.ForeignKey(Admin, on_delete=models.DO_NOTHING, blank=True, null=True)
 
 
 class School_Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    # Connectors
+    school = models.OneToOneField(School, on_delete=models.DO_NOTHING)
 
+    # Validation:
+    status = models.CharField(max_length=50,
+                              choices=[
+                                  ('In Process', 'In Process'),
+                                  ('Accepted', 'Accepted'),
+                                  ('Rejected', 'Rejected'),
+                              ], default='In Process')
+    validatedBy = models.ForeignKey(Admin, on_delete=models.DO_NOTHING, blank=True, null=True)
     # In Connecting Migration Add To School

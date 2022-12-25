@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'corsheaders',
     'bootstrapform',
+    'crispy_forms',
     # Added to prevent cors problems
     'rest_framework',
     'django_filters',
@@ -146,7 +147,6 @@ AUTH_USER_MODEL = 'users.User'
 
 # Adjust After Launch on for debugging purposes
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = (
 
 
@@ -159,3 +159,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 
 }
+
+LOGIN_REDIRECT_URL = 'homepage'
+LOGOUT_REDIRECT_URL = 'homepage'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -45,15 +45,16 @@
             <div class="col">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">School Info</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <h5 class="card-title">{{ school.name }}</h5>
+                        <p class="card-text">{{ school.school_description }}</p>
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Guidelines</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <h5 class="card-title">{{ school.location.city }} - {{ school.location.country }} -
+                            {{ school.location.district }}</h5>
+                        <p class="card-text">{{ school.location.description }}</p>
                     </div>
                 </div>
                 <br>

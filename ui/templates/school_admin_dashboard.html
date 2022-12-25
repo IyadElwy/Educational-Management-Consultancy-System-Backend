@@ -211,7 +211,7 @@
     <body data-new-gr-c-s-check-loaded="14.1088.0" data-gr-ext-installed="">
 
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{% url 'school_admin_homepage' %}">School
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{% url 'school_admin_homepage' user.pk %}">School
             Admin</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
@@ -220,7 +220,7 @@
         </button>
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="#">Sign out</a>
+                <a class="nav-link px-3" href="{% url 'logout' %}">Sign out</a>
             </div>
         </div>
     </header>
@@ -231,7 +231,8 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'school_admin_homepage' %}">
+                            <a class="nav-link active" aria-current="page" href="
+{% url 'school_admin_homepage' user.pk %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-home align-text-bottom"

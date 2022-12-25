@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
+
 from django.conf.urls import handler404
 
 #####################################################################################################
@@ -7,10 +9,9 @@ from django.conf.urls import handler404
 urlpatterns = [
     #####################################################################################################
     # general
-    path('', views.home),
-    path('login/', views.login, name='login'),
-    path('registerschool/', views.register_school, name='register_school'),
-    path('registervolunteer/', views.register_volunteer, name='register_volunteer'),
+    path('', views.home, name='homepage'),
+    # path('registerschool/', views.register_school.as_view(), name='register_school'),
+    # path('registervolunteer/', views.register_volunteer, name='register_volunteer'),
     path('downloadapp/', views.download_app, name='download_app'),
     #####################################################################################################
     # admin
@@ -28,7 +29,7 @@ urlpatterns = [
          name='admin_views_single_past_session'),
     #######################################################################################################
     # school admin
-    path('schooladmin/', views.school_admin_home, name='school_admin_homepage'),
+    path('schooladmin/<int:pk>', views.school_admin_home, name='school_admin_homepage'),
     path('schooladmin/upcomingsessions/', views.school_admin_upcoming_sessions,
          name='school_admin_views_upcoming_sessions'),
     path('schooladmin/upcomingsessions/<int:sessionid>/', views.school_admin_views_single_upcoming_session,
@@ -48,7 +49,7 @@ urlpatterns = [
          name='school_admin_add_course'),
 
     #####################################################################################################
-
+    path('accounts/login/', include('django.contrib.auth.urls')),
 ]
 
 #####################################################################################################

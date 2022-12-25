@@ -29,18 +29,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Math 101 - Cheat Sheet</td>
-                            <td>
-                                <a href="{% url 'school_admin_download_material' 1 1 %}">
-                                    <button type="button" class="btn btn-outline-primary btn-sm">Download
-                                    </button>
-                                </a>
-                            </td>
-                            <td>
-                                <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
-                            </td>
-                        </tr>
+                        {% for m in material %}
+
+                            <tr>
+                                <td>{{ m.name }}</td>
+                                <td>
+                                    <a href="{% url 'school_admin_download_material' course.pk m.pk %}">
+                                        <button type="button" class="btn btn-outline-primary btn-sm">Download
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

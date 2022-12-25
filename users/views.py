@@ -7,6 +7,7 @@ from .models import User, Volunteer, Student, Admin, School_Admin
 import jwt, datetime
 import json
 
+
 # Create your views here.
 
 class RegisterVolunteerView(APIView):
@@ -17,7 +18,7 @@ class RegisterVolunteerView(APIView):
         print(userinfo)
         Userializer = UserSerializer(data=userinfo)
         Userializer.is_valid(raise_exception=True)
-        user =  Userializer.save()
+        user = Userializer.save()
         volunteerinfo = data['volunteer']
 
         volunteerinfo['user'] = user.id
@@ -26,6 +27,7 @@ class RegisterVolunteerView(APIView):
         Volunteerializer.save()
 
         return Response(Userializer.data);
+
 
 class RegisterStudentView(APIView):
     def post(self, request):
@@ -45,6 +47,7 @@ class RegisterStudentView(APIView):
 
         return Response(Userializer.data)
 
+
 class RegisterAdminView(APIView):
     def post(self, request):
         data = request.data
@@ -54,9 +57,9 @@ class RegisterAdminView(APIView):
         Userializer.is_valid(raise_exception=True)
 
         user = Userializer.save()
-        admininfo={}
+        admininfo = {}
 
-        admininfo['user']=user.id
+        admininfo['user'] = user.id
         adminSerializers = AdminSerializer(data=admininfo)
         adminSerializers.is_valid(raise_exception=True)
         adminSerializers.save()
@@ -97,7 +100,7 @@ class LoginView(APIView):
         if not user.check_password(password):
             raise AuthenticationFailed('Incorrect password!')
 
-        #Generating Payload for JWT
+        # Generating Payload for JWT
 
         role = ''
         if user.is_Volunteer:
@@ -125,6 +128,8 @@ class LoginView(APIView):
             'jwt': token
         }
         return response
+
+
 class UserView(APIView):
 
     def get(self, request):
@@ -159,7 +164,8 @@ class UserView(APIView):
         extra['extra'] = serializer1.data
         return Response(extra)
 
-#Can be ignoreed after Use of frontend but just in case
+
+# Can be ignoreed after Use of frontend but just in case
 class LogoutView(APIView):
     def post(self, request):
         response = Response()

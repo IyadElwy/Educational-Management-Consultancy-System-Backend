@@ -2,9 +2,10 @@ from django.conf import settings
 import io
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 import datetime
 
+import users.models
 from session.models import Session
 from .forms import AddMaterialForm, AddCourseForm
 from coursematerial import models as material_models
@@ -14,19 +15,12 @@ from school import models as school_models
 from rating import models as rating_models
 from utils import gcp_functions
 from django.views.generic import CreateView
+from django.views import generic
+from users import models as user_models
 
 
 def home(req):
     return render(request=req, template_name='home.html')
-
-
-def login(req):
-    return render(request=req, template_name='login.html')
-
-
-def register_school(req):
-    return render(request=req, template_name='register_school.html',
-                  context={'key': settings.GCP_API})
 
 
 def register_volunteer(req):
@@ -83,8 +77,11 @@ def admin_views_single_past_session(req, sessionid):
 
 ##############################################################################
 
-def school_admin_home(req):
-    return render(request=req, template_name='school_admin_home.html')
+def school_admin_home(req, pk):
+    return render(request=req, template_name='school_admin_home.html', context={'school':
+                                                                                    school_models.School.objects.filter(
+                                                                                        school_admin=user_models.School_Admin.objects.get(
+                                                                                            user=req.user))[0]})
 
 
 def school_admin_upcoming_sessions(req):
@@ -117,7 +114,9 @@ class school_admin_views_single_past_session(CreateView):
         form.instance.session = session_models.Session.objects.get(id=self.kwargs['sessionid'])
         return super(school_admin_views_single_past_session, self).form_valid(form)
 
-    success_url = reverse_lazy('school_admin_views_past_sessions')
+    def get_success_url(self):
+        rating_models.Rating.objects.create(CoordinatorRating_id=self.object.id)
+        return reverse('school_admin_views_past_sessions')
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -141,43 +140,57 @@ def school_admin_courses(req):
     if req.method == 'POST':
         form = AddCourseForm(req.POST, req.FILES)
         if form.is_valid():
-            return render(req, 'school_admin_courses.html', {'form': form})
+            school = \
+                school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
+
+            return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
+            ).filter(school=school)})
     else:
         form = AddCourseForm()
 
-    return render(req, 'school_admin_courses.html', {'form': form})
+        school = \
+            school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
+
+        return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
+        ).filter(school=school)})
 
 
 def admin_add_course(req):
     if req.method == 'POST':
-
+        school = None
         form = AddCourseForm(req.POST, req.FILES)
         if form.is_valid():
             material_name = dict(req.POST)['name'][0]
             description = dict(req.POST)['description'][0]
             grade_level = int(dict(req.POST)['grade_level'][0])
-            school_admin = school_models.School.objects.filter(user=req.user)[0]
-
+            school = \
+                school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
             course_models.Course.objects.create(name=material_name, description=description, grade_level=grade_level,
-                                                school=school_models.School.objects.filter(
-                                                    school_admin=school_admin)[0])
-            return render(req, 'school_admin_courses.html', {'form': form})
-    else:
-        form = AddCourseForm()
+                                                school=school)
+            return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
+            ).filter(school=school)})
+        else:
+            form = AddCourseForm()
 
-    return render(req, 'school_admin_courses.html', {'form': form})
+        school = \
+            school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
+        return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
+        ).filter(school=school)})
 
 
 def school_admin_views_single_course(req, courseid):
+    course = course_models.Course.objects.get(id=courseid)
+
+    material = material_models.SchoolMaterial.objects.all().filter(course=course)
     if req.method == 'POST':
         form = AddMaterialForm(req.POST, req.FILES)
         if form.is_valid():
-            return render(req, 'school_admin_views_single_course.html', {'form': form})
+            return render(req, 'school_admin_views_single_course.html',
+                          {'form': form, 'course': course, 'material': material})
     else:
         form = AddMaterialForm()
 
-    course = course_models.Course.objects.get(id=courseid)
-    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course})
+    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material})
 
 
 def SchoolMaterialDownload(req, courseid, materialid):
@@ -190,10 +203,16 @@ def SchoolMaterialDownload(req, courseid, materialid):
 
 
 def schoolMaterialUpload(req, courseid):
+    course = course_models.Course.objects.get(id=courseid)
+
+    material = material_models.SchoolMaterial.objects.all().filter(course=course)
+
     if req.method == 'POST':
-        new_material = material_models.SchoolMaterial.objects.create(
-            course=course_models.Course.objects.get(pk=courseid),
-            name=req.POST['material_name'])
+        new_material = material_models.SchoolMaterial.objects.create(name=dict(req.POST)['material_name'][0],
+                                                                     course=course,
+                                                                     description='',
+                                                                     uploaded_by=user_models.School_Admin.objects.get(
+                                                                         user=req.user.pk))
 
         gcp_functions.upload_blob_from_memory(settings.BUCKET_NAME,
                                               dict(req.FILES)['material_file'][0].file.getvalue(),
@@ -201,13 +220,16 @@ def schoolMaterialUpload(req, courseid):
 
         form = AddMaterialForm(req.POST, req.FILES)
         if form.is_valid():
-            return render(req, 'school_admin_views_single_course.html', {'form': form})
+            return render(req, 'school_admin_views_single_course.html',
+                          {'form': form, 'course': course, 'material': material})
     else:
         form = AddMaterialForm()
 
-    return render(req, 'school_admin_views_single_course.html', {'form': form})
+    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material})
 
 
 ##############################################################################
 def error_404_handler(req, exception):
     return render(request=req, template_name='404.html')
+
+##############################################################################

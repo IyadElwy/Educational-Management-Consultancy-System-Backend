@@ -19,18 +19,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Math 101</td>
-                            <td>8</td>
-                            <td>
-                                <a href="{% url 'school_admin_views_single_course' 1 %}">
-                                    <button type="button" class="btn btn-outline-warning btn-sm">View</button>
-                                </a>
-                            </td>
-                            <td>
-                                <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
-                            </td>
-                        </tr>
+                        {% for course in courses %}
+                            <tr>
+                                <td>Math 101</td>
+                                <td>8</td>
+                                <td>
+                                    <a href="{% url 'school_admin_views_single_course' course.pk %}">
+                                        <button type="button" class="btn btn-outline-warning btn-sm">View</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <button href="#" type="button" class="btn btn-outline-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

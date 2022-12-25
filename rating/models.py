@@ -54,3 +54,9 @@ class StudentRating(models.Model):
 class MLScore(models.Model):
     session = models.ForeignKey(to='session.Session', on_delete=models.CASCADE)
     percentage = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
+
+class Rating(models.Model):
+    StudentRating = models.ForeignKey(StudentRating, on_delete=models.CASCADE, blank=True, null=True)
+    CoordinatorRating = models.OneToOneField(CoordinatorRating, on_delete=models.CASCADE, blank=True, null=True)
+    MLScore = models.OneToOneField(MLScore, on_delete=models.CASCADE, blank=True, null=True)

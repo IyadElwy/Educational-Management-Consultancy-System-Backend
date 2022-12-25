@@ -163,21 +163,59 @@
 
     <body data-new-gr-c-s-check-loaded="14.1088.0" data-gr-ext-installed="">
     <header class="p-3 text-bg-dark">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-lg-baseline justify-content-center justify-content-lg-start">
+        <div class="d-flex flex-wrap align-items-lg-baseline justify-content-center justify-content-lg-start">
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-secondary">EMCS</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-                </ul>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 text-secondary">EMCS</a></li>
+                <li><a href="/" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="/" class="nav-link px-2 text-white">About</a></li>
+            </ul>
 
 
-                <div class="text-end">
+            <div class="text-end">
+                {% if user.is_authenticated %}
+
+
+                    {% if user.is_Admin %}
+                        <a href="{% url 'admin_homepage' %}">
+                            <button type="button" class="btn btn-success me-2">Dashboard</button>
+                        </a>
+
+                        <a href="{% url 'logout' %}">
+                            <button type="button" class="btn btn-outline-light me-2">Log out
+                                of {{ user.username }}</button>
+                        </a>
+
+                    {% elif user.is_School_Admin %}
+                        <a href="{% url 'school_admin_homepage' user.pk %}">
+                            <button type="button" class="btn btn-success me-2">Dashboard</button>
+                        </a>
+
+                        <a href="{% url 'logout' %}">
+                            <button type="button" class="btn btn-outline-light me-2">Log out
+                                of {{ user.username }}</button>
+                        </a>
+
+
+                    {% else %}
+
+                        <a href="{% url 'download_app' %}">
+                            <button type="button" class="btn btn-outline-light me-2">Download App to start
+                                using it feature
+                            </button>
+                        </a>
+
+
+                    {% endif %}
+
+
+
+                {% else %}
                     <a href="{% url 'login' %}">
                         <button type="button" class="btn btn-outline-light me-2">Login</button>
                     </a>
-                </div>
+
+                {% endif %}
             </div>
         </div>
     </header>
@@ -198,7 +236,7 @@
                     <h2 class="display-5">Looking for great Volunteers?</h2>
                     <p class="lead">Sign up as a school admin and be your school's representative.</p>
                 </div>
-                <a href="{% url 'register_school' %}">
+                <a href="#">
                     <button type="button" class="btn btn-warning"
                     >Sign-up now as a school
                         admin
@@ -217,7 +255,7 @@
                      style="width: 80%; height: 150px; border-radius: 21px 21px 0 0;">
                     <br>
                     <br>
-                    <a href="{% url 'register_volunteer' %}">
+                    <a href="#">
                         <button type="button" class="btn btn-warning">Sign-up as a Volunteer</button>
                     </a>
 
