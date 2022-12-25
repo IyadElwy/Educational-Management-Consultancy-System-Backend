@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import RegisterVolunteerView , RegisterStudentView, RegisterAdminView, RegisterSchoolAdminView, LoginView,UserView,LogoutView
-from .volunteerViews import getMySessions,applyToCourse
+from .volunteerViews import getMySessions,applyToSession
 urlpatterns = [
     path('register/volunteer', RegisterVolunteerView.as_view()),
     path('register/student', RegisterStudentView.as_view()),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('user', UserView.as_view()),
     path('logout', LogoutView.as_view()),
     path('volunteer/mysessions', getMySessions),
-    path('volunteer/applytocourse', applyToCourse)
+    path('volunteer/applysession', applyToSession),
+
 ]
