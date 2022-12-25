@@ -26,7 +26,8 @@ class Student(models.Model):
 
     #Connectors to other models
     school = models.OneToOneField(School, on_delete=models.CASCADE)
-    takes_session = models.ManyToManyField('session.Session') #check if this is correct
+    #Produced A cyclic dependency error beware of this
+    #takes_session = models.ManyToManyField('session.Session') #check if this is correct
 
 
 
