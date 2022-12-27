@@ -24,21 +24,23 @@
                 <th scope="col">#</th>
                 <th scope="col">name</th>
                 <th scope="col">email</th>
-                <th scope="col">sessions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1,001</td>
-                <td>Yomla</td>
-                <td>yoode@dede.com</td>
-                <td>445</td>
-                <td>
-                    <a href="{% url 'admin_views_single_volunteer' 1 %}">
-                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                    </a>
-                </td>
-            </tr>
+            {% for vol in volunteers %}
+
+                <tr>
+                    <td>{{ vol.pk }}</td>
+                    <td>{{ vol.user.first_name }}</td>
+                    <td>{{ vol.user.username }}</td>
+                    <td>
+                        <a href="{% url 'admin_views_single_volunteer' vol.pk %}">
+                            <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
             </tbody>
         </table>
     </div>

@@ -1,5 +1,8 @@
 {% extends 'school_admin_dashboard.html' %}
 
+{% block addsession %}
+    <a class="nav-link" href="{% url 'school_admin_addsession' school.pk %}">
+{% endblock %}
 
 {% block dashboard-content %}
 
@@ -22,7 +25,6 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Applications</th>
                 <th scope="col">Course</th>
                 <th scope="col">Date</th>
             </tr>
@@ -33,7 +35,6 @@
 
                 <tr>
                     <td>{{ session.pk }}</td>
-                    <td>3</td>
                     <td>{{ session.course.name }}</td>
                     <td>{{ session.start_time }}</td>
                     <td>

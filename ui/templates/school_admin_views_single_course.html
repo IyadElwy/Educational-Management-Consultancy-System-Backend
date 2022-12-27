@@ -1,4 +1,7 @@
 {% extends 'school_admin_dashboard.html' %}
+{% block addsession %}
+    <a class="nav-link" href="{% url 'school_admin_addsession' school.pk %}">
+{% endblock %}
 
 
 {% block dashboard-content %}
@@ -52,7 +55,8 @@
 
             </div>
             <div class="col">
-                <form action="{% url 'school_admin_upload_material' 1 %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'school_admin_upload_material' course.pk %}" method="post"
+                      enctype="multipart/form-data">
                     {% csrf_token %}
 
                     {% for field in form %}

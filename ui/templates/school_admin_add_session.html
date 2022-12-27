@@ -1,5 +1,8 @@
 {% extends 'school_admin_dashboard.html' %}
 {% load bootstrap %}
+{% block addsession %}
+    <a class="nav-link" href="{% url 'school_admin_addsession' school.pk %}">
+{% endblock %}
 
 
 {% block dashboard-content %}

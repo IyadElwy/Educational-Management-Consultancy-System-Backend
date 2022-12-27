@@ -13,6 +13,7 @@ urlpatterns = [
     # path('registerschool/', views.register_school.as_view(), name='register_school'),
     # path('registervolunteer/', views.register_volunteer, name='register_volunteer'),
     path('downloadapp/', views.download_app, name='download_app'),
+    path('downloadcv/<int:user_id>', views.CVDownload, name='cvdownload'),
     #####################################################################################################
     # admin
     path('admin/', views.admin_home, name='admin_homepage'),
@@ -21,6 +22,8 @@ urlpatterns = [
     path('admin/volunteers/', views.admin_volunteers, name='admin_views_volunteers'),
     path('admin/volunteers/<int:volunteerid>/', views.admin_views_single_volunteer,
          name='admin_views_single_volunteer'),
+    path('admin/volunteers/<int:volunteerid>/acceptvolunteer', views.accept_volunteer,
+         name='admin_acceptvolunteer_volunteer'),
     path('admin/upcomingsessions/', views.admin_upcoming_sessions, name='admin_views_upcoming_sessions'),
     path('admin/upcomingsessions/<int:sessionid>/', views.admin_views_single_upcoming_session,
          name='admin_views_single_upcoming_session'),
@@ -34,13 +37,20 @@ urlpatterns = [
          name='school_admin_views_upcoming_sessions'),
     path('schooladmin/upcomingsessions/<int:sessionid>/', views.school_admin_views_single_upcoming_session,
          name='school_admin_views_single_upcoming_session'),
+
+    path('schooladmin/upcomingsessions/<int:sessionid>/accept/<int:application_id>', views.accept_application,
+         name='school_admin_accepts_application'),
+    path('schooladmin/upcomingsessions/<int:sessionid>/reject/<int:application_id>', views.reject_application,
+         name='school_admin_rejects_application'),
+
     path('schooladmin/pastsessions/', views.school_admin_past_sessions, name='school_admin_views_past_sessions'),
     path('schooladmin/pastsessions/<int:sessionid>/', views.school_admin_views_single_past_session.as_view(),
          name='school_admin_views_single_past_session'),
     path('schooladmin/courses', views.school_admin_courses, name='school_admin_views_courses'),
     path('schooladmin/courses/<int:courseid>/', views.school_admin_views_single_course,
          name='school_admin_views_single_course'),
-    path('schooladmin/addsession', views.school_admin_add_session.as_view(), name='school_admin_addsession`'),
+    path('schooladmin/addsession/<int:schoolid>', views.school_admin_add_session.as_view(),
+         name='school_admin_addsession'),
     path('schooladmin/courses/<int:courseid>/material/upload', views.schoolMaterialUpload,
          name='school_admin_upload_material'),
     path('schooladmin/courses/<int:courseid>/material/<int:materialid>/', views.SchoolMaterialDownload,

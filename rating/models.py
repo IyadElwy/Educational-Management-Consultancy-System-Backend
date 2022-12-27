@@ -17,6 +17,12 @@ class CoordinatorRating(models.Model):
     question_6 = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
                                      verbose_name='The instructor was easily contacted picked up phone etc')
 
+    def get_avg(self):
+        return (
+                       self.question_1 + self.question_2 + self.question_3 + self.question_4 + self.question_5 +
+                       self.question_6
+               ) / 6
+
 
 class StudentRating(models.Model):
     session = models.ForeignKey(to='session.Session', on_delete=models.CASCADE)
@@ -50,13 +56,37 @@ class StudentRating(models.Model):
     question_11 = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
                                       verbose_name='I felt other peers did not affect the instructor’s performance')
 
+    def get_avg(self):
+        return (
+                       self.question_1 +
+                       self.question_2 +
+                       self.question_3 +
+                       self.question_4 +
+                       self.question_5 +
+                       self.question_6 +
+                       self.question_7 +
+                       self.question_8 +
+                       self.question_9 +
+                       self.question_10 +
+                       self.question_11
+               ) / 11
+
 
 class MLScore(models.Model):
     session = models.ForeignKey(to='session.Session', on_delete=models.CASCADE)
     percentage = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+
+    def get_avg(self):
+        return self.percentage
 
 
 class Rating(models.Model):
     StudentRating = models.ForeignKey(StudentRating, on_delete=models.CASCADE, blank=True, null=True)
     CoordinatorRating = models.OneToOneField(CoordinatorRating, on_delete=models.CASCADE, blank=True, null=True)
     MLScore = models.OneToOneField(MLScore, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        try:
+            return (self.StudentRating.get_avg() + self.CoordinatorRating.get_avg() + self.StudentRating.get_avg()) / 3
+        except Exception:
+            return 'None'

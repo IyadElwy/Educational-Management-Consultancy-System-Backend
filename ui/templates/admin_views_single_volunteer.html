@@ -11,36 +11,39 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Contact Info</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ volunteer.user.username }}</p>
                     </div>
                 </div>
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Status</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ volunteer.status }}</p>
                     </div>
                 </div>
 
             </div>
             <div class="col">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Sessions</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
-                    </div>
-                </div>
+
                 <br>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Rating</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ volunteer.rating }}</p>
                     </div>
                 </div>
 
                 <br>
                 <br>
-                <button type="button" class="btn btn-warning">Change Status</button>
+                {% if volunteer.status != 'Accepted' %}
+
+                    <a href="{% url 'admin_acceptvolunteer_volunteer' volunteer.pk %}">
+                        <button type="button" class="btn btn-success">Accept</button>
+
+                    </a>
+
+                {% endif %}
+
                 <button type="button" class="btn btn-danger">Delete</button>
             </div>
         </div>

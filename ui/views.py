@@ -7,7 +7,7 @@ import datetime
 
 import users.models
 from session.models import Session
-from .forms import AddMaterialForm, AddCourseForm
+from .forms import AddMaterialForm, AddCourseForm, school_admin_add_session_form
 from coursematerial import models as material_models
 from course import models as course_models
 from session import models as session_models
@@ -17,6 +17,7 @@ from utils import gcp_functions
 from django.views.generic import CreateView
 from django.views import generic
 from users import models as user_models
+from application import models as application_models
 
 
 def home(req):
@@ -48,11 +49,19 @@ def admin_views_single_school(req, schoolid):
 
 
 def admin_volunteers(req):
-    return render(request=req, template_name='admin_volunteers.html')
+    volunteers = user_models.Volunteer.objects.all()
+    return render(request=req, template_name='admin_volunteers.html', context={'volunteers': volunteers})
 
 
 def admin_views_single_volunteer(req, volunteerid):
-    return render(request=req, template_name='admin_views_single_volunteer.html')
+    volunteer = user_models.Volunteer.objects.get(user_id=volunteerid)
+    return render(request=req, template_name='admin_views_single_volunteer.html', context={'volunteer': volunteer})
+
+
+def accept_volunteer(req, volunteerid):
+    user_models.Volunteer.objects.all().filter(user_id=volunteerid).update(status='Accepted')
+    volunteer = user_models.Volunteer.objects.get(user_id=volunteerid)
+    return render(request=req, template_name='admin_views_single_volunteer.html', context={'volunteer': volunteer})
 
 
 def admin_upcoming_sessions(req):
@@ -86,16 +95,36 @@ def school_admin_home(req, pk):
 
 def school_admin_upcoming_sessions(req):
     sessions = session_models.Session.objects.filter(start_time__gt=datetime.datetime.now())
-    return render(request=req, template_name='school_admin_upcoming_sessions.html', context={'sessions': sessions})
+    return render(request=req, template_name='school_admin_upcoming_sessions.html', context={'sessions': sessions,
+                                                                                             'school':
+                                                                                                 school_models.School.objects.filter(
+                                                                                                     school_admin=user_models.School_Admin.objects.get(
+                                                                                                         user=req.user))[
+                                                                                                     0]
+                                                                                             })
 
 
 def school_admin_views_single_upcoming_session(req, sessionid):
-    return render(request=req, template_name='school_admin_views_single_upcoming_session.html')
+    session = session_models.Session.objects.get(id=sessionid)
+    applications = application_models.Application.objects.all().filter(session_id=sessionid)
+    return render(request=req, template_name='school_admin_views_single_upcoming_session.html',
+                  context={'session': session,
+                           'applications': applications,
+                           'school':
+                               school_models.School.objects.filter(
+                                   school_admin=user_models.School_Admin.objects.get(
+                                       user=req.user))[0]
+                           })
 
 
 def school_admin_past_sessions(req):
     sessions = session_models.Session.objects.filter(end_time__lt=datetime.datetime.now())
-    return render(request=req, template_name='school_admin_past_sessions.html', context={'sessions': sessions})
+    return render(request=req, template_name='school_admin_past_sessions.html', context={'sessions': sessions,
+                                                                                         'school':
+                                                                                             school_models.School.objects.filter(
+                                                                                                 school_admin=user_models.School_Admin.objects.get(
+                                                                                                     user=req.user))[0]
+                                                                                         })
 
 
 class school_admin_views_single_past_session(CreateView):
@@ -121,18 +150,28 @@ class school_admin_views_single_past_session(CreateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['session'] = session_models.Session.objects.get(id=self.kwargs['sessionid'])
+        data['school'] = school_models.School.objects.filter(school_admin=user_models.School_Admin.objects.get(
+            user=self.request.user))[0]
         return data
 
 
 class school_admin_add_session(CreateView):
     model = Session
     template_name = 'school_admin_add_session.html'
-    fields = (
-        'course',
-        'description',
-        'start_time',
-        'end_time',
-    )
+
+    form_class = school_admin_add_session_form
+
+    def get_form_kwargs(self):
+        kwargs = super(school_admin_add_session, self).get_form_kwargs()
+        kwargs['initial']['courses'] = course_models.Course.objects.all().filter(school_id=self.kwargs['schoolid'])
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['school'] = school_models.School.objects.filter(school_admin=user_models.School_Admin.objects.get(
+            user=self.request.user))[0]
+        return data
+
     success_url = reverse_lazy('school_admin_views_upcoming_sessions')
 
 
@@ -152,7 +191,12 @@ def school_admin_courses(req):
             school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
 
         return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
-        ).filter(school=school)})
+        ).filter(school=school),
+                                                         'school':
+                                                             school_models.School.objects.filter(
+                                                                 school_admin=user_models.School_Admin.objects.get(
+                                                                     user=req.user))[0]
+                                                         })
 
 
 def admin_add_course(req):
@@ -168,29 +212,50 @@ def admin_add_course(req):
             course_models.Course.objects.create(name=material_name, description=description, grade_level=grade_level,
                                                 school=school)
             return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
-            ).filter(school=school)})
+            ).filter(school=school),
+                                                             'school':
+                                                                 school_models.School.objects.filter(
+                                                                     school_admin=user_models.School_Admin.objects.get(
+                                                                         user=req.user))[0]
+                                                             })
         else:
             form = AddCourseForm()
 
         school = \
             school_models.School.objects.filter(school_admin=user_models.School_Admin(user_id=req.user.pk))[0]
         return render(req, 'school_admin_courses.html', {'form': form, 'courses': course_models.Course.objects.all(
-        ).filter(school=school)})
+        ).filter(school=school),
+                                                         'school':
+                                                             school_models.School.objects.filter(
+                                                                 school_admin=user_models.School_Admin.objects.get(
+                                                                     user=req.user))[0]
+                                                         })
 
 
 def school_admin_views_single_course(req, courseid):
     course = course_models.Course.objects.get(id=courseid)
 
     material = material_models.SchoolMaterial.objects.all().filter(course=course)
+    print(course.pk)
     if req.method == 'POST':
         form = AddMaterialForm(req.POST, req.FILES)
         if form.is_valid():
             return render(req, 'school_admin_views_single_course.html',
-                          {'form': form, 'course': course, 'material': material})
+                          {'form': form, 'course': course, 'material': material,
+                           'school':
+                               school_models.School.objects.filter(
+                                   school_admin=user_models.School_Admin.objects.get(
+                                       user=req.user))[0]
+                           })
     else:
         form = AddMaterialForm()
 
-    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material})
+    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material,
+                                                                 'school':
+                                                                     school_models.School.objects.filter(
+                                                                         school_admin=user_models.School_Admin.objects.get(
+                                                                             user=req.user))[0]
+                                                                 })
 
 
 def SchoolMaterialDownload(req, courseid, materialid):
@@ -204,6 +269,8 @@ def SchoolMaterialDownload(req, courseid, materialid):
 
 def schoolMaterialUpload(req, courseid):
     course = course_models.Course.objects.get(id=courseid)
+    print(course)
+    print(courseid)
 
     material = material_models.SchoolMaterial.objects.all().filter(course=course)
 
@@ -221,11 +288,60 @@ def schoolMaterialUpload(req, courseid):
         form = AddMaterialForm(req.POST, req.FILES)
         if form.is_valid():
             return render(req, 'school_admin_views_single_course.html',
-                          {'form': form, 'course': course, 'material': material})
+                          {'form': form, 'course': course, 'material': material,
+                           'school':
+                               school_models.School.objects.filter(
+                                   school_admin=user_models.School_Admin.objects.get(
+                                       user=req.user))[0]
+                           })
     else:
         form = AddMaterialForm()
 
-    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material})
+    return render(req, 'school_admin_views_single_course.html', {'form': form, 'course': course, 'material': material,
+                                                                 'school':
+                                                                     school_models.School.objects.filter(
+                                                                         school_admin=user_models.School_Admin.objects.get(
+                                                                             user=req.user))[0]
+                                                                 })
+
+
+def CVDownload(req, user_id):
+    file_obj = io.BytesIO()
+    file_obj = gcp_functions.download_blob(settings.BUCKET_NAME, f'cv_{user_id}.pdf')
+    response = HttpResponse(file_obj, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename=cv_{user_id}.pdf'
+
+    return response
+
+
+def accept_application(req, sessionid, application_id):
+    session = session_models.Session.objects.get(id=sessionid)
+    applications = application_models.Application.objects.all().filter(session_id=sessionid)
+    application = application_models.Application.objects.all().filter(id=application_id).update(status='Accepted')
+
+    return render(request=req, template_name='school_admin_views_single_upcoming_session.html',
+                  context={'session': session,
+                           'applications': applications,
+                           'school':
+                               school_models.School.objects.filter(
+                                   school_admin=user_models.School_Admin.objects.get(
+                                       user=req.user))[0]
+                           })
+
+
+def reject_application(req, sessionid, application_id):
+    session = session_models.Session.objects.get(id=sessionid)
+    applications = application_models.Application.objects.all().filter(session_id=sessionid)
+    application = application_models.Application.objects.all().filter(id=application_id).update(status='Rejected')
+
+    return render(request=req, template_name='school_admin_views_single_upcoming_session.html',
+                  context={'session': session,
+                           'applications': applications,
+                           'school':
+                               school_models.School.objects.filter(
+                                   school_admin=user_models.School_Admin.objects.get(
+                                       user=req.user))[0]
+                           })
 
 
 ##############################################################################

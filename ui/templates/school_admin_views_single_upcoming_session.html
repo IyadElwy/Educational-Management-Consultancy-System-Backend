@@ -1,9 +1,12 @@
 {% extends 'school_admin_dashboard.html' %}
+{% block addsession %}
+    <a class="nav-link" href="{% url 'school_admin_addsession' school.pk %}">
+{% endblock %}
 
 
 {% block dashboard-content %}
 
-    <h2>Session Id</h2>
+    <h2>Session {{ session.pk }}</h2>
     <br>
     <h5>Applications</h5>
     <div class="container text-center">
@@ -15,23 +18,69 @@
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Rating</th>
-                            <th scope="col">Sessions</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Mustafa</td>
-                            <td>3.2</td>
-                            <td>42</td>
-                            <td>
-                                <button href="#" type="button" class="btn btn-outline-success btn-sm">Approve</button>
-                            </td>
-                            <td>
-                                <button href="#" type="button" class="btn btn-outline-danger btn-sm">Reject</button>
-                            </td>
-                        </tr>
+                        {% for application in applications %}
+                            <tr>
+                                <td><a href="{% url 'cvdownload' application.volunteer.user.pk %}"
+                                >{{ application.volunteer.user.first_name }}</a></td>
+                                <td>{{ application.volunteer.rating }}</td>
+                                {% if application.status == 'Accepted' %}
+
+                                    <td>
+                                        <a href="{% url 'school_admin_accepts_application' session.pk application.pk %}">
+                                            <button href="#"
+                                                    type="button"
+                                                    class="btn btn-outline-success
+                                    btn-sm">Already Approved
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                {% else %}
+
+                                    <td>
+                                        <a href="{% url 'school_admin_accepts_application' session.pk application.pk %}">
+                                            <button href="#"
+                                                    type="button"
+                                                    class="btn btn-outline-success
+                                    btn-sm">Approve
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                {% endif %}
+                                {% if application.status == 'Rejected' %}
+
+                                    <td>
+                                        <a href="{% url 'school_admin_rejects_application' session.pk application.pk %}">
+                                            <button href="#"
+                                                    type="button"
+                                                    class="btn btn-outline-danger
+                                    btn-sm">Already Rejected
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                {% else %}
+
+                                    <td>
+                                        <a href="{% url 'school_admin_rejects_application' session.pk application.pk %}">
+                                            <button href="#"
+                                                    type="button"
+                                                    class="btn btn-outline-danger
+                                    btn-sm">Reject
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
@@ -42,7 +91,10 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Details</h5>
-                        <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+                        <p class="card-text">{{ session.course }}</p>
+                        <p class="card-text">{{ session.description }}</p>
+                        <p class="card-text">{{ session.start_time|date:'Y-m-d H:i' }}
+                            - {{ session.end_time|date:'Y-m-d H:i' }}</p>
                     </div>
                 </div>
                 <br>
@@ -52,7 +104,8 @@
                 <button type="button" class="btn btn-danger">Remove</button>
             </div>
         </div>
-        <br>
+    </div>
+    <br>
 
 
 {% endblock dashboard-content %}

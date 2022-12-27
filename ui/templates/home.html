@@ -177,6 +177,10 @@
 
 
                     {% if user.is_Admin %}
+                        <a href="/databaseadmin">
+                            <button type="button" class="btn btn-primary me-2">Database Dashboard</button>
+                        </a>
+
                         <a href="{% url 'admin_homepage' %}">
                             <button type="button" class="btn btn-success me-2">Dashboard</button>
                         </a>
