@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from .models import User, Volunteer, Student, Admin, School_Admin
+from wallet.models import Wallet
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,6 +31,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = self.Meta.model(**validated_data)
+        instance.wallet = Wallet.objects.create(points=0)
         instance.save()
         return instance
 

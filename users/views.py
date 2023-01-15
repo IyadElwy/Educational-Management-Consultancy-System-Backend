@@ -15,7 +15,6 @@ class RegisterVolunteerView(APIView):
         data = request.data
         userinfo = data['user']
         userinfo['is_Volunteer'] = True
-        print(userinfo)
         Userializer = UserSerializer(data=userinfo)
         Userializer.is_valid(raise_exception=True)
         user = Userializer.save()

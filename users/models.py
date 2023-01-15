@@ -27,9 +27,10 @@ class User(AbstractUser):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
-    # In Connecting Migration Add To School
-    school = models.CharField(max_length=30, blank=True)
-    takes_session = models.ManyToManyField('session.Session')  # check if this is correct
+    # Connectors to other models
+    school = models.OneToOneField(School, on_delete=models.CASCADE)
+    # Produced A cyclic dependency error beware of this
+    # takes_session = models.ManyToManyField('session.Session') #check if this is correct
 
 
 class Admin(models.Model):
