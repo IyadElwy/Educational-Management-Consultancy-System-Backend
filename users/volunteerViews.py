@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from session.models import Session
 from application.models import Application
-from .models import Volunteer,Student,Admin,School_Admin,User
+from .models import Volunteer, Student, Admin, School_Admin, User
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
+
+
 @api_view(['GET'])
 def getMySessions(request):
-
     # Validate the token and make sure it's a volunteer
     token = request.COOKIES.get('jwt')
 
@@ -39,9 +40,10 @@ def getMySessions(request):
                         'description': session.session.description, 'school_name': session.session.course.school.name,
                         'school_id': session.session.course.school.id, 'taught_by': session.session.taught_by})
     return Response(courses)
+
+
 @api_view(['POST'])
 def applyToSession(request):
-
     # Validate the token and make sure it's a volunteer
     token = request.COOKIES.get('jwt')
 
@@ -69,7 +71,6 @@ def applyToSession(request):
     session_id = request.data['session_id']
     session = Session.objects.filter(id=session_id).first()
 
-
     if not session:
         raise AuthenticationFailed('Invalid session!')
 
@@ -81,7 +82,6 @@ def applyToSession(request):
     # Create the application
 
     Application.objects.create(volunteer=volunteer, session=session)
-
 
     return Response('Applied successfully!')
 
