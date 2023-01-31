@@ -24,7 +24,7 @@ def getMySessions(request):
     if not user.is_Volunteer:
         raise AuthenticationFailed('Unauthenticated!')
     if payload['role'] != 'Volunteer':
-        raise AuthenticationFailed('Unauthenticated!')
+        raise AuthenticationFailed('Cannot Take Classes!')
 
     volunteer = Volunteer.objects.filter(user=user).first()
 
