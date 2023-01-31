@@ -105,11 +105,11 @@ def getMyPendingSessions(request):
     if payload['role'] != 'Volunteer':
         raise AuthenticationFailed('Unauthenticated!')
 
-    volunteer = Volunteer.objects.filter(user=user).first()
+    volunteer1 = Volunteer.objects.filter(user=user).first()
 
     # After Authenticating that this is truly a volunteer, we can get the sessions that are pending
 
-    sessions = Application.objects.filter(volunteer=volunteer, status='In Process')
+    sessions = Application.objects.filter(volunteer=volunteer1, status='In Process')
     courses = []
     for session in sessions:
         courses.append({'id': session.session.id, 'name': session.session.course.name,
