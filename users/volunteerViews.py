@@ -115,5 +115,5 @@ def getMyPendingSessions(request):
         courses.append({'id': session.session.id, 'name': session.session.course.name,
                         'location': 'Empty Place holder value add after migration', 'date': session.session.start_time,
                         'description': session.session.description, 'school_name': session.session.course.school.name,
-                        'school_id': session.session.course.school.id, 'taught_by': session.session.taught_by})
+                        'school_id': session.session.course.school.id})
     return Response(courses)
