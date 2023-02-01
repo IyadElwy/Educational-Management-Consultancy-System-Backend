@@ -120,3 +120,18 @@ def getMyPendingSessions(request):
                         'start_time':start_time, 'end_time': end_time, 'description': app.session.description,'school_name' : app.session.course.school.name,
                         'school_id': app.session.course.school.id})
     return Response(courses)
+
+@api_view(['GET'])
+def getSessions(request):
+
+    sessions = Session.objects.all()
+    courses = []
+    for session in sessions:
+        date = session.start_time.strftime("%A, %d %B %Y ")
+        start_time = session.start_time.strftime("%I:%M %p")
+        end_time = session.end_time.strftime("%I:%M %p")
+        courses.append({'id': session.id, 'name': session.course.name,
+                        'location': {'lat': session.course.school.location.lat,'long': session.course.school.location.lon}, 'date': date,
+                        'start_time':start_time, 'end_time': end_time, 'description': session.description,'school_name' : session.course.school.name,
+                        'school_id': session.course.school.id})
+    return Response(courses)
