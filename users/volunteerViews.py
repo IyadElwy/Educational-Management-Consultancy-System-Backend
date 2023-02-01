@@ -109,11 +109,14 @@ def getMyPendingSessions(request):
 
     # After Authenticating that this is truly a volunteer, we can get the sessions that are pending
 
-    sessions = Application.objects.filter(volunteer=volunteer1, status='In Process')
+    apps = Application.objects.filter(volunteer=volunteer1, status='In Process')
     courses = []
-    for session in sessions:
-        courses.append({'id': session.session.id, 'name': session.session.course.name,
-                        'location': 'Empty Place holder value add after migration', 'date': session.session.start_time,
-                        'description': session.session.description, 'school_name': session.session.course.school.name,
-                        'school_id': session.session.course.school.id})
+    for app in apps:
+        date = app.session.start_time.strftime("%A, %d %B %Y ")
+        start_time = app.session.start_time.strftime("%I:%M %p")
+        end_time = app.session.end_time.strftime("%I:%M %p")
+        courses.append({'id': app.session.id, 'name': app.session.course.name,
+                        'location': {'lat': app.session.course.school.location.lat,'long': app.session.course.school.location.lon}, 'date': date,
+                        'start_time':start_time, 'end_time': end_time, 'description': app.session.description,'school_name' : app.session.course.school.name,
+                        'school_id': app.session.course.school.id})
     return Response(courses)
