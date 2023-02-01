@@ -135,3 +135,21 @@ def getSessions(request):
                         'start_time':start_time, 'end_time': end_time, 'description': session.description,'school_name' : session.course.school.name,
                         'school_id': session.course.school.id})
     return Response(courses)
+
+@api_view(['GET'])
+def getSessionsSchool(request):
+
+    if not request.data:
+        raise AuthenticationFailed('Invalid School!')
+    school_id = (request.data['school_id'])
+    sessions = Session.objects.filter(course__school=school_id)
+    courses = []
+    for session in sessions:
+        date = session.start_time.strftime("%A, %d %B %Y ")
+        start_time = session.start_time.strftime("%I:%M %p")
+        end_time = session.end_time.strftime("%I:%M %p")
+        courses.append({'id': session.id, 'name': session.course.name,
+                        'location': {'lat': session.course.school.location.lat,'long': session.course.school.location.lon}, 'date': date,
+                        'start_time':start_time, 'end_time': end_time, 'description': session.description,'school_name' : session.course.school.name,
+                        'school_id': session.course.school.id})
+    return Response(courses)
